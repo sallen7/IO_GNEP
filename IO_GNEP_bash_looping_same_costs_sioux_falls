@@ -1,0 +1,40 @@
+#!/bin/bash
+
+for player in 2 5 10
+do
+    for alpha_flag in 1 2
+    do
+    	python script_1_generating_data_for_matlab_sioux_falls.py $alpha_flag $player
+    	sleep 15
+    	matlab -r "cd('~/IO_GNEP'); matlab_generating_data_original_costs;exit"
+    	sleep 60
+    	gams gams_original_costs_file.gms --NUMBER=1
+    	gams gams_original_costs_file.gms --NUMBER=2
+    	gams gams_original_costs_file.gms --NUMBER=3
+    	gams gams_original_costs_file.gms --NUMBER=4
+    	gams gams_original_costs_file.gms --NUMBER=5
+    	gams gams_original_costs_file.gms --NUMBER=6
+    	gams gams_original_costs_file.gms --NUMBER=7
+    	gams gams_original_costs_file.gms --NUMBER=8
+    	gams gams_original_costs_file.gms --NUMBER=9
+    	gams gams_original_costs_file.gms --NUMBER=10
+    	sleep 60
+    	python script_2_inverse_optimization_step.py
+    	sleep 60
+    	matlab -r "cd('~/IO_GNEP'); matlab_generating_data_IO_costs;exit"
+        sleep 60
+    	gams gams_IO_costs_file.gms --NUMBER=1
+    	gams gams_IO_costs_file.gms --NUMBER=2
+    	gams gams_IO_costs_file.gms --NUMBER=3
+    	gams gams_IO_costs_file.gms --NUMBER=4
+    	gams gams_IO_costs_file.gms --NUMBER=5
+    	gams gams_IO_costs_file.gms --NUMBER=6
+    	gams gams_IO_costs_file.gms --NUMBER=7
+    	gams gams_IO_costs_file.gms --NUMBER=8
+    	gams gams_IO_costs_file.gms --NUMBER=9
+    	gams gams_IO_costs_file.gms --NUMBER=10
+    	sleep 60
+    	python script_3_calculating_flow_error_and_boxplots.py
+    	sleep 30
+    done
+done
